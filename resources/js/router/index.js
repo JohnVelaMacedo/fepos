@@ -129,6 +129,75 @@ export const asyncRoutes = [
   tableRoutes,
   adminRoutes,
   {
+    path: '/producto',
+    component: Layout,
+    redirect: 'noredirect',
+    alwaysShow: false,
+    name: 'Productos',
+    meta: {
+      title: 'Productos',
+      icon: 'form',
+      roles: ['admin', 'editor'], // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'lista',
+        component: () => import('@/views/producto/lista'),
+        name: 'listaProductos',
+        meta: {
+          title: 'Lista de Productos',
+          roles: ['admin'], // or you can only set roles in sub nav
+        },
+      },
+      {
+        path: 'registro',
+        component: () => import('@/views/producto/registrar'),
+        name: 'registroProductos',
+        meta: {
+          title: 'Registrar Producto',
+          // if do not set roles, means: this page does not require permission
+        },
+      },
+    ],
+  },
+  {
+    path: '/configuraciones',
+    component: Layout,
+    redirect: 'noredirect',
+    alwaysShow: false,
+    name: 'Configuraciones',
+    meta: {
+      title: 'Configuraciones',
+      icon: 'admin',
+      roles: ['admin', 'editor'], // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'categoriaProducto',
+        component: () => import('@/views/Configuraciones/categoriaProducto/index'),
+        name: 'categoriaProducto',
+        meta: {
+          title: 'Categoria Producto',
+          roles: ['admin'], // or you can only set roles in sub nav
+        },
+        children: [
+          {
+            path: 'registrar',
+            component: () => import('@/views/configuraciones/categoriaProducto/registrar'),
+            name: 'Registrar Categoría',
+            meta: { title: 'Registrar Categoría', icon: 'form' },
+          },
+          {
+            path: 'lista',
+            component: () => import('@/views/configuraciones/categoriaProducto/lista'),
+            name: 'Lista Categoría',
+            meta: { title: 'Lista Categoría' },
+          },
+        ],
+      },
+    ],
+  },
+  {
     path: '/theme',
     component: Layout,
     redirect: 'noredirect',
