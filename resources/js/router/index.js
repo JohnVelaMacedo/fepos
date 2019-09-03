@@ -11,6 +11,7 @@ Vue.use(Router);
 
 /* Layout */
 import Layout from '@/layout';
+import PagePOS from '@/pos';
 
 /* Router for modules */
 import elementUiRoutes from './modules/element-ui';
@@ -115,6 +116,19 @@ export const constantRoutes = [
         component: () => import('@/views/guide/index'),
         name: 'Guide',
         meta: { title: 'guide', icon: 'guide', noCache: true },
+      },
+    ],
+  },
+  {
+    path: '/pos',
+    component: PagePOS,
+    redirect: '/pos/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/pos/index'),
+        name: 'POS',
+        meta: { title: 'pos', noCache: true },
       },
     ],
   },
@@ -292,6 +306,7 @@ const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes,
+  mode: 'history',
 });
 
 const router = createRouter();
