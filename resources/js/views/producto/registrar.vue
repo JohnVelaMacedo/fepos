@@ -59,17 +59,17 @@
             </el-form-item>
             <el-form-item label="Categoría">
               <el-autocomplete
-                v-model="producto.category_id"
+                v-model="producto.category_name"
                 :fetch-suggestions="querySearchAsync"
-                placeholder="Categoría del Prodcto"
+                placeholder="Categoría del Producto"
                 :trigger-on-focus="false"
                 clearable
                 @select="handleSelect"
               />
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="onSubmit">Create</el-button>
-              <el-button @click="onCancel">Cancel</el-button>
+              <el-button type="primary" @click="onSubmit">Guardar</el-button>
+              <el-button @click="onCancel">Cancelar</el-button>
             </el-form-item>
           </el-col>
         </el-form>
@@ -79,6 +79,11 @@
 </template>
 
 <script>
+import CategoryResource from '@/api/category';
+import ProductoResource from '@/api/producto';
+const categoryResource = new CategoryResource('categorias');
+const productoResource = new ProductoResource('productos');
+
 export default {
   name: 'RegistroProductos',
   components: {},
@@ -97,6 +102,7 @@ export default {
         price: null,
         alert_quantity: null,
         image: null,
+        category_name: null,
         category_id: null,
         subcategory_id: null,
         cf1: null,
@@ -110,14 +116,60 @@ export default {
         track_quantity: null,
         details: null,
       },
+      listQuery: {
+        page: 1,
+        limit: -1,
+        like: null,
+      },
     };
   },
   mounted() {
-    this.links = this.loadAll();
+    // this.links = this.loadAll();
   },
   methods: {
     onSubmit() {
-      this.$message('submit!');
+      this.loading = true;
+      productoResource
+        .store(this.producto)
+        .then(response => {
+          this.loading = false;
+          this.$message({
+            message: 'Categoría Guardada',
+            type: 'success',
+            duration: 5 * 1000,
+          });
+          this.limpiar();
+        })
+        .catch(error => {
+          console.log('Error: ', error);
+          this.loading = false;
+        });
+    },
+    limpiar() {
+      this.producto = {
+        id: null,
+        code: null,
+        name: null,
+        unit: null,
+        size: null,
+        cost: null,
+        price: null,
+        alert_quantity: null,
+        image: null,
+        category_name: null,
+        category_id: null,
+        subcategory_id: null,
+        cf1: null,
+        cf2: null,
+        cf3: null,
+        cf4: null,
+        cf5: null,
+        cf6: null,
+        quantity: null,
+        tax_rate: null,
+        track_quantity: null,
+        details: null,
+      };
     },
     onCancel() {
       this.$message({
@@ -125,27 +177,29 @@ export default {
         type: 'warning',
       });
     },
-    loadAll() {
-      return [
-        { value: 'vue', link: 'https://github.com/vuejs/vue' },
-        { value: 'element', link: 'https://github.com/ElemeFE/element' },
-        { value: 'cooking', link: 'https://github.com/ElemeFE/cooking' },
-        { value: 'mint-ui', link: 'https://github.com/ElemeFE/mint-ui' },
-        { value: 'vuex', link: 'https://github.com/vuejs/vuex' },
-        { value: 'vue-router', link: 'https://github.com/vuejs/vue-router' },
-        { value: 'babel', link: 'https://github.com/babel/babel' },
-      ];
-    },
     querySearchAsync(queryString, cb) {
-      var links = this.links;
-      var results = queryString
-        ? links.filter(this.createFilter(queryString))
-        : links;
-
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(() => {
-        cb(results);
-      }, 3000 * Math.random());
+      // var links = this.links;
+      // console.log(links);
+      // var results = queryString
+      //   ? links.filter(this.createFilter(queryString))
+      //   : links;
+      if (queryString.length > 1) {
+        this.listQuery.like = [queryString];
+        categoryResource
+          .list(this.listQuery)
+          .then(response => {
+            if (response.items) {
+              var results = response.items;
+              clearTimeout(this.timeout);
+              this.timeout = setTimeout(() => {
+                cb(results);
+              }, 500 * Math.random());
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
     },
     createFilter(queryString) {
       return link => {
@@ -155,7 +209,8 @@ export default {
       };
     },
     handleSelect(item) {
-      console.log(item);
+      this.producto.category_id = '' + item.link;
+      // console.log(this.producto);
     },
   },
 };

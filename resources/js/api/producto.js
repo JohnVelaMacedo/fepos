@@ -1,8 +1,8 @@
 import Resource from '@/api/resource';
 
-class CategoryResource extends Resource {
+class ProductoResource extends Resource {
   constructor() {
-    super('categoria');
+    super('producto');
   }
 
   // storeCategory(data) {
@@ -12,4 +12,4 @@ class CategoryResource extends Resource {
   // }
 }
 
-export { CategoryResource as default };
+export { ProductoResource as default };

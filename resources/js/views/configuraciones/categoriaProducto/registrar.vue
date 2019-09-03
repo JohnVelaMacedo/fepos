@@ -24,8 +24,8 @@
               />
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="onSubmit">Create</el-button>
-              <el-button @click="onCancel">Cancel</el-button>
+              <el-button type="primary" @click="onSubmit">Guardar</el-button>
+              <el-button @click="onCancel">Cancelar</el-button>
             </el-form-item>
           </el-col>
         </el-form>
@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import Resource from '@/api/resource';
-const categoryResource = new Resource('categorias');
+import CategoryResource from '@/api/category';
+const categoryResource = new CategoryResource('categorias');
 
 export default {
   name: 'RegistroProductos',
@@ -52,28 +52,37 @@ export default {
   },
   mounted() {},
   methods: {
+    limpiar() {
+      this.categoria = {
+        id: null,
+        code: null,
+        name: null,
+      };
+    },
     onSubmit() {
       this.loading = true;
       categoryResource
-        .storeCategory(this.categoria)
+        .store(this.categoria)
         .then(response => {
           this.loading = false;
           this.$message({
-            message: 'User information has been updated successfully',
+            message: 'Categoría Guardada',
             type: 'success',
             duration: 5 * 1000,
           });
+          this.limpiar();
         })
         .catch(error => {
-          console.log(error);
+          console.log('Error: ', error);
           this.loading = false;
         });
     },
     onCancel() {
-      this.$message({
-        message: 'cancel!',
-        type: 'warning',
-      });
+      this.limpiar();
+      // this.$message({
+      //   message: 'cancel!',
+      //   type: 'warning',
+      // });
     },
     handleSelect(item) {
       console.log(item);

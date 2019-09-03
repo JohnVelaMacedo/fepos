@@ -135,7 +135,7 @@ export const asyncRoutes = [
     alwaysShow: false,
     name: 'Productos',
     meta: {
-      title: 'Productos',
+      title: 'Products',
       icon: 'form',
       roles: ['admin', 'editor'], // you can set roles in root nav
     },
@@ -145,7 +145,8 @@ export const asyncRoutes = [
         component: () => import('@/views/producto/lista'),
         name: 'listaProductos',
         meta: {
-          title: 'Lista de Productos',
+          title: 'List_Products',
+          icon: 'list',
           roles: ['admin'], // or you can only set roles in sub nav
         },
       },
@@ -154,7 +155,8 @@ export const asyncRoutes = [
         component: () => import('@/views/producto/registrar'),
         name: 'registroProductos',
         meta: {
-          title: 'Registrar Producto',
+          title: 'Add_Products',
+          icon: 'form',
           // if do not set roles, means: this page does not require permission
         },
       },
@@ -167,7 +169,7 @@ export const asyncRoutes = [
     alwaysShow: false,
     name: 'Configuraciones',
     meta: {
-      title: 'Configuraciones',
+      title: 'Configurations',
       icon: 'admin',
       roles: ['admin', 'editor'], // you can set roles in root nav
     },
@@ -177,21 +179,21 @@ export const asyncRoutes = [
         component: () => import('@/views/Configuraciones/categoriaProducto/index'),
         name: 'categoriaProducto',
         meta: {
-          title: 'Categoria Producto',
+          title: 'Category_Product',
           roles: ['admin'], // or you can only set roles in sub nav
         },
         children: [
           {
             path: 'registrar',
             component: () => import('@/views/configuraciones/categoriaProducto/registrar'),
-            name: 'Registrar Categoría',
-            meta: { title: 'Registrar Categoría', icon: 'form' },
+            name: 'Registrar',
+            meta: { title: 'Register', icon: 'form' },
           },
           {
             path: 'lista',
             component: () => import('@/views/configuraciones/categoriaProducto/lista'),
-            name: 'Lista Categoría',
-            meta: { title: 'Lista Categoría' },
+            name: 'Lista',
+            meta: { title: 'Category_List', icon: 'list' },
           },
         ],
       },

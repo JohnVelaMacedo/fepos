@@ -12,10 +12,23 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Category::all();
-        return compact('data');
+        $query = '';
+        $data = $request->only('limit','page','like','all','attr');
+        if(isset($data['all'])){
+            $items = Category::all();
+            $data = array("items"=>$items);
+            return compact('data');
+        }else{
+            if(isset($data['like'])){
+                // var_dump($data['like'][0]);
+                $query = 'and name like \''.$data['like'][0].'%\'';
+            }
+            $items = \DB::select('select id as link, concat(code, \' \',name) as value from categories where 1=1 '.$query,[]);
+            $data = array("items"=>$items);
+            return compact('items');
+        }
     }
 
     /**
@@ -36,10 +49,12 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $categoria = new Flight;
-        $categoria->code = $request->categoria->code;
-        $categoria->name = $request->categoria->name;
+        $data = $request->only('code','name');
+        $categoria = new Category;
+        $categoria->code = $data['code'];
+        $categoria->name = $data['name'];
         $categoria->save();
+        
     }
 
     /**
@@ -74,8 +89,10 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        $categoria = Category::find(1);
-        $categoria->name = 'New Flight Name';
+        $data = $request->only('id','code','name');
+        $categoria = Category::find($data['id']);
+        $categoria->code = $data['code'];
+        $categoria->name = $data['name'];
         $categoria->save();
     }
 
@@ -85,9 +102,9 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        $categoria = Category::find($category->categoria->id);
+        $categoria = Category::find($id);
         $categoria->delete();
     }
 }
