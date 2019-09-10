@@ -128,7 +128,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/pos/index'),
         name: 'POS',
-        meta: { title: 'pos', noCache: true },
+        meta: { title: 'POS', icon: 'guide', noCache: true },
       },
     ],
   },
@@ -181,10 +181,47 @@ export const asyncRoutes = [
     component: Layout,
     redirect: 'noredirect',
     alwaysShow: false,
-    name: 'Configuraciones',
+    name: 'Ajustes',
     meta: {
-      title: 'Configurations',
+      title: 'Settings',
       icon: 'admin',
+      roles: ['admin', 'editor'], // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'categoriaProducto',
+        component: () => import('@/views/Configuraciones/categoriaProducto/index'),
+        name: 'categoriaProducto',
+        meta: {
+          title: 'Category_Product',
+          roles: ['admin'], // or you can only set roles in sub nav
+        },
+        children: [
+          {
+            path: 'registrar',
+            component: () => import('@/views/configuraciones/categoriaProducto/registrar'),
+            name: 'Registrar',
+            meta: { title: 'Register', icon: 'form' },
+          },
+          {
+            path: 'lista',
+            component: () => import('@/views/configuraciones/categoriaProducto/lista'),
+            name: 'Lista',
+            meta: { title: 'Category_List', icon: 'list' },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: '/configuraciones',
+    component: Layout,
+    redirect: 'noredirect',
+    alwaysShow: false,
+    name: 'Personas',
+    meta: {
+      title: 'Peoples',
+      icon: 'peoples',
       roles: ['admin', 'editor'], // you can set roles in root nav
     },
     children: [

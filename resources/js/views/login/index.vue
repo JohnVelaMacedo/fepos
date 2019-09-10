@@ -32,10 +32,10 @@
           Entrar
         </el-button>
       </el-form-item>
-      <div class="tips">
+      <!-- <div class="tips">
         <span style="margin-right:20px;">Correo: admin@laravue.dev</span>
         <span>Contraseña: laravue</span>
-      </div>
+      </div> -->
     </el-form>
   </div>
 </template>
@@ -50,14 +50,14 @@ export default {
   data() {
     const validateEmail = (rule, value, callback) => {
       if (!validEmail(value)) {
-        callback(new Error('Please enter the correct email'));
+        callback(new Error('!Por favor ingrese correo electronico correcto!'));
       } else {
         callback();
       }
     };
     const validatePass = (rule, value, callback) => {
       if (value.length < 4) {
-        callback(new Error('Password cannot be less than 4 digits'));
+        callback(new Error('Contraseña no puede tener menos de 4 dígitos'));
       } else {
         callback();
       }

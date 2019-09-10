@@ -75,9 +75,10 @@ export default {
     List_Products: 'Lista de Productos',
     Add_Products: 'Agregar Productos',
     Category_Product: 'Categoría Productos',
-    Configurations: 'Configuraciones',
+    Settings: 'Ajustes',
     Register: 'Registrar',
     Category_List: 'Lista de Categorias',
+    POS: 'POS',
   },
   navbar: {
     logOut: 'Cerrar Sesión',
